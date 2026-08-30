@@ -1,0 +1,306 @@
+/* =========================================================
+   DRex Consulting — SERVICES PAGE  (services.html)
+
+   Layout only. Reuses the notebook visual system
+   (notebook.css) and the global tokens / typography /
+   buttons (style.css); never re-declares either.
+
+   Load order: style.css -> notebook.css -> animations.css
+   -> pages/services.css -> responsive.css
+
+   Page voice: checklists + a hand-drawn process flow.
+========================================================= */
+
+/* section wrappers are positioning contexts for their
+   in-page decoration */
+.services-hero,
+.service-block,
+.services-interlude,
+.services-process,
+.services-cta {
+  position: relative;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+.services-hero__page {
+  padding-block: var(--sp-8) var(--sp-8);
+}
+
+.services-hero .section-heading {
+  margin-bottom: var(--sp-5);
+}
+
+.services-hero__intro {
+  max-width: 54ch;
+}
+
+.services-hero__note {
+  margin-top: var(--sp-5);
+}
+
+
+/* =========================================================
+   SERVICE BLOCKS  (01–04)
+   number | copy | example-list
+========================================================= */
+.service-block__grid {
+  display: grid;
+  gap: var(--sp-4) var(--sp-6);
+}
+
+.service-block__num {
+  margin: 0;
+  max-width: none;
+  font-family: var(--font-type);
+  font-size: clamp(2.4rem, 1.7rem + 3vw, 3.75rem);
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.55;
+}
+
+.service-block__body {
+  display: grid;
+  gap: var(--sp-3);
+  align-content: start;
+}
+
+.service-block__body .section-heading {
+  margin-bottom: 0;
+}
+
+.service-block__body p {
+  margin: 0;
+  max-width: 54ch;
+}
+
+/* the "example areas of support" panel — reads as its own
+   column: a light wash keyed off the accent tint */
+.service-block__examples {
+  align-self: start;
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--accent-tint);
+  border-radius: var(--radius);
+}
+
+.example-list__label {
+  margin: 0 0 var(--sp-3);
+  font-family: var(--font-type);
+  font-size: var(--fs-eyebrow);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.example-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.example-list li {
+  position: relative;
+  margin: 0;
+  padding-left: 1.7em;
+  line-height: 1.4;
+}
+
+/* hand-drawn checkmark — decorative, generated */
+.example-list li::before {
+  content: "\2713";
+  position: absolute;
+  left: 0;
+  top: 0.02em;
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: 1.15em;
+  line-height: 1.2;
+  color: var(--accent-deep);
+}
+
+/* desktop: true three-column layout */
+@media (min-width: 1000px) {
+  .service-block__grid {
+    grid-template-columns: auto minmax(0, 1fr) minmax(15rem, 21rem);
+    gap: var(--sp-6) var(--sp-7);
+    align-items: start;
+  }
+
+  .service-block__num {
+    padding-top: 0.12em;
+  }
+}
+
+
+/* =========================================================
+   INTERLUDE — "not sure which one you need?"
+========================================================= */
+.services-interlude__page {
+  padding-block: var(--sp-6);
+  text-align: center;
+}
+
+.services-interlude__inner {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-3);
+}
+
+.services-interlude__sub {
+  margin: 0;
+  max-width: 46ch;
+  color: var(--ink-soft);
+}
+
+.services-interlude__doodle {
+  font-size: var(--fs-hand);
+  color: var(--pencil);
+  transform: rotate(-2deg);
+}
+
+
+/* =========================================================
+   PROCESS FLOW  (05)
+   vertical stack with down-arrows on small screens;
+   single horizontal row with right-arrows >= 1025px.
+========================================================= */
+.process-flow {
+  list-style: none;
+  margin: var(--sp-7) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--sp-6);
+}
+
+.process-step {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--paper-page);
+  border: 2px solid var(--rule-strong);
+  /* uneven radii read as a hand-drawn box */
+  border-radius: 18px 8px 15px 10px / 10px 15px 8px 18px;
+}
+
+.process-step h3 {
+  overflow-wrap: break-word;
+}
+
+.process-step__num {
+  display: block;
+  margin-bottom: var(--sp-1);
+  font-family: var(--font-type);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.process-step h3 {
+  margin: 0 0 var(--sp-2);
+}
+
+.process-step p {
+  margin: 0;
+  max-width: none;
+}
+
+/* connector arrow — points down between stacked steps */
+.process-step__arrow {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--sp-6) / -2);
+  transform: translate(-50%, 50%);
+  font-family: var(--font-hand);
+  font-size: 1.9rem;
+  line-height: 1;
+  color: var(--pencil);
+}
+
+@media (min-width: 1100px) {
+  .process-flow {
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: var(--sp-6);
+    align-items: stretch;
+  }
+
+  .process-step {
+    padding: var(--sp-4);
+  }
+
+  .process-step h3 {
+    font-size: var(--fs-lead);
+  }
+
+  /* arrow rotates to point right, sitting in the column gap */
+  .process-step__arrow {
+    left: auto;
+    bottom: auto;
+    right: calc(var(--sp-6) / -2);
+    top: 2.2rem;
+    transform: translate(50%, 0) rotate(-90deg);
+  }
+}
+
+
+/* =========================================================
+   CALL TO ACTION
+========================================================= */
+.services-cta__page {
+  padding-block: var(--sp-8) var(--sp-9);
+  text-align: center;
+}
+
+.services-cta__content {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-4);
+  max-width: 46ch;
+  margin-inline: auto;
+}
+
+.services-cta__content h2,
+.services-cta__content p {
+  margin: 0;
+  max-width: none;
+}
+
+.services-cta__content .handwritten-note {
+  margin: 0;
+}
+
+.services-cta__content .button {
+  margin-top: var(--sp-3);
+}
+
+
+/* =========================================================
+   RESPONSIVE — page-specific collapses
+   (shared grids are handled in responsive.css; the grids
+   below are page-specific and collapsed here.)
+========================================================= */
+@media (max-width: 999px) {
+  .service-block__examples {
+    justify-self: start;
+    width: 100%;
+    max-width: 28rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .service-block__examples {
+    padding: var(--sp-3) var(--sp-4);
+  }
+
+  .services-cta__content .button {
+    width: 100%;
+    max-width: 22rem;
+  }
+}

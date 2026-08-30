@@ -1,0 +1,431 @@
+/* =========================================================
+   DRex Consulting — HOME PAGE  (index.html)
+
+   Layout rules unique to the home page only. Reuses the
+   notebook visual system (notebook.css) and the global
+   tokens / typography / buttons (style.css); it never
+   re-declares either system.
+
+   Load order: style.css -> notebook.css -> animations.css
+   -> pages/home.css -> responsive.css
+
+   style.css currently carries a "HOME PAGE BASELINE" block
+   as a progressive fallback; this file is the finished
+   layout and intentionally supersedes it.
+========================================================= */
+
+/* section wrappers are positioning contexts for their
+   in-page decoration */
+.hero,
+.intro,
+.services-preview,
+.approach,
+.projects-preview,
+.why-drex,
+.home-cta {
+  position: relative;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+.hero-page {
+  position: relative;
+  padding-block: var(--sp-8) var(--sp-9);
+}
+
+.hero-content {
+  display: grid;
+  gap: var(--sp-5);
+  max-width: 60ch;
+}
+
+.hero-note {
+  justify-self: start;
+  margin: 0;
+}
+
+.hero-heading-group {
+  position: relative;
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.hero-logo {
+  width: clamp(190px, 42vw, 244px);
+  height: auto;
+  margin-bottom: var(--sp-4);
+}
+
+.hero-heading-group h1 {
+  margin: 0;
+}
+
+/* final on-page placement of the hand-drawn underline */
+.drawn-underline {
+  width: clamp(160px, 48%, 320px);
+  margin-top: var(--sp-1);
+}
+
+.hero-description {
+  margin: 0;
+  max-width: 46ch;
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+  margin-top: var(--sp-2);
+}
+
+.hero-callout {
+  justify-self: start;
+  margin-top: var(--sp-5);
+}
+
+/* hand-drawn hero doodle, tucked into the lower-right corner */
+.hero-doodle {
+  position: absolute;
+  right: var(--sp-6);
+  bottom: var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--sp-1);
+  max-width: 12rem;
+  text-align: right;
+}
+
+/* 1025+ so this never overlaps responsive.css's <=1024px block */
+@media (min-width: 1025px) {
+  .hero-content {
+    max-width: 54ch;
+  }
+
+  /* park the sticky note in the right margin of the page */
+  .hero-callout {
+    position: absolute;
+    top: var(--sp-9);
+    right: var(--sp-7);
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-callout {
+    justify-self: center;
+  }
+}
+
+/* =========================================================
+   INTRO  (01)
+========================================================= */
+.intro-grid {
+  display: grid;
+  gap: var(--sp-6);
+}
+
+.intro-copy {
+  display: grid;
+  gap: var(--sp-4);
+  align-content: start;
+}
+
+.intro-copy .lead {
+  margin: 0;
+}
+
+.intro-copy p {
+  margin: 0;
+}
+
+.intro-copy .text-link {
+  justify-self: start;
+  margin-top: var(--sp-2);
+}
+
+@media (min-width: 860px) {
+  .intro-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(190px, 15rem);
+    gap: var(--sp-8);
+    align-items: start;
+  }
+
+  .intro-grid .margin-note {
+    margin-top: var(--sp-6);
+  }
+}
+
+/* =========================================================
+   SERVICES PREVIEW  (02)
+========================================================= */
+.service-list {
+  display: grid;
+  margin-block: var(--sp-6);
+}
+
+.service-entry {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: var(--sp-3) var(--sp-4);
+  align-items: start;
+  padding-block: var(--sp-5);
+  border-bottom: 1px solid var(--paper-edge);
+}
+
+.service-entry:first-child {
+  padding-top: 0;
+}
+
+.service-entry:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.service-number {
+  font-family: var(--font-type);
+  font-size: var(--fs-h3);
+  line-height: 1;
+  color: var(--ink-faint);
+}
+
+.service-copy h3 {
+  margin: 0 0 var(--sp-2);
+}
+
+.service-copy p {
+  margin: 0;
+  max-width: 52ch;
+}
+
+.service-mark {
+  align-self: start;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .service-mark {
+    transition: transform 150ms ease;
+  }
+
+  .service-entry:hover .service-mark,
+  .service-entry:focus-within .service-mark {
+    transform: translateX(3px) rotate(-8deg);
+  }
+}
+
+/* =========================================================
+   APPROACH  (03)
+========================================================= */
+.approach-list {
+  list-style: none;
+  margin: var(--sp-6) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--sp-5);
+}
+
+.approach-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--sp-2) var(--sp-4);
+  align-items: start;
+  padding-left: var(--sp-4);
+  border-left: 2px solid var(--accent-tint);
+}
+
+.approach-item h3 {
+  margin: 0 0 var(--sp-2);
+}
+
+.approach-item p {
+  margin: 0;
+}
+
+.approach-step {
+  align-self: start;
+  padding-top: 0.3em;
+  font-family: var(--font-type);
+  font-size: var(--fs-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+/* 769+ so it clears responsive.css's <=768px single-column rule */
+@media (min-width: 769px) {
+  .approach-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-6) var(--sp-5);
+  }
+}
+
+/* =========================================================
+   PROJECTS PREVIEW  (04)
+========================================================= */
+.project-grid {
+  display: grid;
+  gap: var(--sp-6);
+  margin-block: var(--sp-6);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+}
+
+.project-image-placeholder {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  margin-bottom: var(--sp-4);
+  border: 1px solid var(--paper-edge);
+  background: repeating-linear-gradient(
+    45deg,
+    var(--paper-edge) 0 10px,
+    var(--paper-page) 10px 20px
+  );
+}
+
+.project-image-placeholder span {
+  padding: var(--sp-1) var(--sp-3);
+  background: var(--paper-page);
+  font-family: var(--font-type);
+  font-size: var(--fs-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+}
+
+.project-card-content {
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.project-card-content h3 {
+  margin: 0;
+}
+
+.project-card-content p {
+  margin: 0;
+  max-width: none;
+}
+
+.project-type {
+  margin: 0;
+  font-family: var(--font-type);
+  font-size: var(--fs-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+/* =========================================================
+   WHY DREX  (05)
+========================================================= */
+.why-grid {
+  display: grid;
+  gap: var(--sp-6);
+}
+
+.why-copy {
+  display: grid;
+  gap: var(--sp-4);
+  align-content: start;
+}
+
+.why-copy .lead,
+.why-copy p {
+  margin: 0;
+}
+
+.why-copy .button {
+  justify-self: start;
+  margin-top: var(--sp-2);
+}
+
+.why-note {
+  align-self: start;
+  max-width: 22rem;
+}
+
+@media (min-width: 860px) {
+  .why-grid {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: var(--sp-8);
+    align-items: start;
+  }
+
+  .why-note {
+    margin-top: var(--sp-6);
+    transform: rotate(-1.5deg);
+  }
+}
+
+/* =========================================================
+   CALL TO ACTION
+========================================================= */
+.cta-page {
+  position: relative;
+  text-align: center;
+  padding-block: var(--sp-8) var(--sp-9);
+}
+
+.cta-content {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-4);
+  max-width: 44ch;
+  margin-inline: auto;
+}
+
+.cta-content .handwritten-note {
+  margin: 0;
+}
+
+.cta-content h2 {
+  margin: 0;
+}
+
+.cta-content p {
+  margin: 0;
+  max-width: none;
+}
+
+.cta-highlight {
+  font-family: var(--font-hand);
+  font-size: var(--fs-hand);
+  line-height: 1.2;
+  color: var(--accent-deep);
+}
+
+.cta-content .button {
+  margin-top: var(--sp-3);
+}
+
+.cta-doodle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+  max-width: 22rem;
+  margin: var(--sp-6) auto 0;
+  text-align: center;
+}
+
+@media (min-width: 1025px) {
+  .cta-doodle {
+    position: absolute;
+    right: var(--sp-8);
+    bottom: var(--sp-7);
+    max-width: 12rem;
+    margin: 0;
+    align-items: flex-start;
+    text-align: left;
+  }
+}

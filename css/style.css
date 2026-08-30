@@ -1,0 +1,649 @@
+/* =========================================================
+   DRex Consulting — GLOBAL STYLES
+   Reset · design tokens · base typography · links · buttons
+   · layout utilities · shared nav + footer chrome.
+
+   Load order (see every page <head>):
+     fonts.css → style.css → notebook.css → animations.css
+     → pages/<page>.css → responsive.css   (responsive LAST)
+
+   Nothing here re-declares the notebook visual system
+   (that lives in notebook.css) or page-specific layout
+   (that lives in css/pages/<page>.css).
+========================================================= */
+
+/* ---------------------------------------------------------
+   1. RESET
+--------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  display: block;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* ---------------------------------------------------------
+   2. DESIGN TOKENS
+--------------------------------------------------------- */
+:root {
+  color-scheme: light;
+
+  /* rgba base for ink-coloured shadows */
+  --ink-shadow: 38, 42, 33;
+
+  /* paper + ink */
+  --paper:        #f7f1e1;
+  --paper-page:   #fdfaf0;
+  --paper-edge:   #efe7d1;
+  --ink:          #26313f;
+  --ink-soft:     #3b3a34;
+  --ink-faint:    #6f6b5d;
+  --rule:         #b7cfe0;
+  --rule-strong:  #9db9cf;
+  --margin-red:   #cf6b5c;
+  --pencil:       #59564c;
+
+  /* brand accent (trust / consulting) */
+  --accent:        #2f5d86;
+  --accent-deep:   #244b6d;
+  --accent-tint:   #dfe9f1;
+
+  /* sticky + highlighter */
+  --sticky-yellow: #fdf3a9;
+  --sticky-orange: #ffd9a3;
+  --sticky-mint:   #c9e7cf;
+  --highlighter:   #fff29e;
+  --tape:          rgba(255, 248, 214, 0.55);
+
+  /* type families */
+  --font-body:  "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-hand:  "Caveat", "Segoe Print", "Bradley Hand", cursive;
+  --font-type:  "Special Elite", "Courier New", ui-monospace, monospace;
+
+  /* fluid type scale */
+  --fs-eyebrow: clamp(0.75rem, 0.7rem + 0.2vw, 0.85rem);
+  --fs-body:    clamp(1rem, 0.97rem + 0.15vw, 1.075rem);
+  --fs-lead:    clamp(1.125rem, 1.05rem + 0.4vw, 1.3rem);
+  --fs-h3:      clamp(1.2rem, 1.1rem + 0.6vw, 1.5rem);
+  --fs-h2:      clamp(1.8rem, 1.4rem + 1.8vw, 2.75rem);
+  --fs-h1:      clamp(2.4rem, 1.8rem + 3vw, 4rem);
+  --fs-hand:    clamp(1.25rem, 1.1rem + 0.8vw, 1.7rem);
+
+  /* space scale (4px base) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+  --sp-9: 96px;
+  --sp-10: 128px;
+
+  /* structure */
+  --page-max: 1180px;
+  --sheet-max: 1560px;     /* a notebook sheet gets edges on very wide screens */
+  --sheet-col: 64rem;      /* readable written column on a full-bleed sheet */
+  --text-col: 66ch;
+  --radius: 3px;
+  --margin-gutter: 4.5rem;
+  --shadow-page: 0 1px 0 var(--paper-edge), 0 18px 40px -24px rgba(var(--ink-shadow), 0.45);
+  --shadow-lift: 0 10px 24px -12px rgba(var(--ink-shadow), 0.4);
+  --nav-h: 64px;           /* mobile top bar height (<1024px) */
+  --rail-w: 14.5rem;       /* left binding rail width (>=1024px) */
+
+  /* red margin line — tracks the page gutter so it never
+     crosses body text as --margin-gutter shrinks (responsive.css) */
+  --margin-line-x: calc(var(--margin-gutter) - 1rem);
+
+  /* subject-tab accent colours (notebook.css .notebook-tabs cycle) */
+  --tab-1: var(--accent);
+  --tab-2: var(--margin-red);
+  --tab-3: #5f7f46;
+  --tab-4: #b9822f;
+  --tab-5: #6f5f9c;
+}
+
+/* ---------------------------------------------------------
+   3. BASE ELEMENTS
+--------------------------------------------------------- */
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.65;
+  color: var(--ink-soft);
+  /* full-bleed notebook sheets tile edge to edge; this shows only
+     in the thin seam between them and behind the binding rail */
+  background: var(--paper);
+  /* backstop against decoration overflow; `clip` (where supported)
+     does not create a scroll container, so position:fixed nav stays put */
+  overflow-x: hidden;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* >=1024px: the site content sits to the right of the fixed binding rail */
+@media (min-width: 1024px) {
+  body {
+    padding-left: var(--rail-w);
+  }
+}
+
+/* anchored sections clear the mobile top bar */
+[id] {
+  scroll-margin-top: calc(var(--nav-h) + var(--sp-4));
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  line-height: 1.12;
+  color: var(--ink);
+  text-wrap: balance;
+  margin: 0 0 var(--sp-4);
+}
+
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+h4 { font-size: var(--fs-lead); }
+
+p {
+  margin: 0 0 var(--sp-4);
+  max-width: var(--text-col);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 60ch;
+}
+
+/* opt out of the readable measure */
+.measure-full {
+  max-width: none;
+}
+
+ul,
+ol {
+  padding-left: 1.25em;
+}
+
+li {
+  margin-bottom: var(--sp-2);
+}
+
+strong,
+b {
+  font-weight: 700;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--paper-edge);
+  margin-block: var(--sp-6);
+}
+
+/* typewriter labels */
+.eyebrow,
+.page-label {
+  display: block;
+  font-family: var(--font-type);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: var(--fs-eyebrow);
+  color: var(--ink-faint);
+  margin: 0 0 var(--sp-2);
+  max-width: none;
+}
+
+.page-label {
+  color: var(--accent-deep);
+}
+
+/* ---------------------------------------------------------
+   4. LINKS + FOCUS
+--------------------------------------------------------- */
+a {
+  color: var(--accent);
+  text-underline-offset: 0.15em;
+  text-decoration-thickness: from-font;
+}
+
+a:hover {
+  color: var(--accent-deep);
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* inline "read more" style link (pairs with .handwritten-link) */
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 2px solid currentColor;
+  padding-bottom: 1px;
+  max-width: none;
+}
+
+.text-link:hover {
+  color: var(--accent-deep);
+}
+
+/* give thin inline links a comfortable hit area on touch devices */
+@media (pointer: coarse) {
+  .text-link,
+  .handwritten-link {
+    padding-block: 6px;
+  }
+}
+
+/* ---------------------------------------------------------
+   5. SKIP LINK
+--------------------------------------------------------- */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 1000;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  left: var(--sp-3);
+  top: var(--sp-3);
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--ink);
+  color: #fff;
+  border-radius: var(--radius);
+  text-decoration: none;
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* clear the binding rail on desktop */
+@media (min-width: 1024px) {
+  .skip-link:focus {
+    left: calc(var(--rail-w) + var(--sp-3));
+  }
+}
+
+/* ---------------------------------------------------------
+   6. BUTTONS
+--------------------------------------------------------- */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--fs-body);
+  line-height: 1.2;
+  padding: 0.8em 1.4em;
+  min-height: 44px;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  background: none;
+  color: var(--ink);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button-primary {
+  background: var(--accent);
+  border-color: var(--accent-deep);
+  color: #fff;
+}
+
+.button-primary:hover {
+  color: #fff;
+  background: var(--accent-deep);
+}
+
+.button-secondary {
+  background: transparent;
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.button-secondary:hover {
+  color: var(--ink);
+  background: var(--accent-tint);
+}
+
+/* hand-drawn press */
+.notebook-button {
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .button {
+    transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+  }
+
+  .notebook-button:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+
+  .notebook-button:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0 0 0 var(--ink);
+  }
+
+  .notebook-button span {
+    transition: transform 120ms ease;
+  }
+
+  .notebook-button:hover span {
+    transform: translateX(3px);
+  }
+
+  .text-link span {
+    transition: transform 120ms ease;
+  }
+
+  .text-link:hover span {
+    transform: translateX(3px);
+  }
+}
+
+/* ---------------------------------------------------------
+   7. LAYOUT UTILITIES
+--------------------------------------------------------- */
+/* Each <section> is one full-bleed sheet of the notebook. It adds
+   no spacing of its own — the .notebook-page inside owns the paper,
+   the ruled lines, and all padding, so sheets tile with no gaps. */
+.notebook-section {
+  padding: 0;
+}
+
+/* the written column: left-aligned against the red margin, the rest
+   of the sheet stays open ruled paper (room for notes + doodles) */
+.section-content {
+  position: relative;
+  z-index: 1; /* keep headings above the decorative .section-number watermark */
+  max-width: var(--sheet-col);
+  margin-inline: 0 auto;
+}
+
+.section-action {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-top: var(--sp-6);
+}
+
+.stack > * + * {
+  margin-top: var(--sp-4);
+}
+
+.u-visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* =========================================================
+   8. SITE NAV  (shared chrome — components/navbar.html)
+   >=1024px: a fixed vertical "binding rail" on the left edge.
+            Each link is a section index tab; the current page's
+            tab pulls out and merges into the sheet.
+   <1024px: collapses to a top bar + hamburger (responsive.css).
+========================================================= */
+.site-nav {
+  position: fixed;
+  inset: 0 auto 0 0;            /* top:0 right:auto bottom:0 left:0 */
+  width: var(--rail-w);
+  z-index: 100;
+  display: flex;
+  background: var(--paper);
+  border-right: 2px solid var(--rule-strong);
+}
+
+.site-nav__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-7);
+  width: 100%;
+  padding: var(--sp-6) 0 var(--sp-6) var(--sp-5);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.site-nav__brand {
+  display: block;
+  padding-right: var(--sp-4);
+  text-decoration: none;
+  border-radius: var(--radius);
+}
+
+/* rail (>=1024px) shows the compact notebook-D mark;
+   the mobile top bar (responsive.css) swaps in the full wordmark */
+.site-nav__mark {
+  display: block;
+  width: 4.25rem;
+  height: auto;
+}
+
+.site-nav__logo {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .site-nav__mark,
+  .site-nav__logo {
+    transition: opacity 120ms ease;
+  }
+  .site-nav__brand:hover .site-nav__mark,
+  .site-nav__brand:hover .site-nav__logo {
+    opacity: 0.82;
+  }
+}
+
+/* vertical tab stack */
+.site-nav__menu {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--sp-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-nav__menu li {
+  margin: 0;
+}
+
+.site-nav__menu .notebook-tab {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  margin-right: -2px;                 /* overlap the rail's right border */
+  padding: var(--sp-2) var(--sp-4);
+  font-family: var(--font-type);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-decoration: none;
+  background: var(--paper-edge);
+  border: 2px solid var(--rule-strong);
+  border-right: none;                 /* the tab opens toward the sheet */
+  border-left: 4px solid var(--tab-1);
+  border-radius: 8px 0 0 8px;
+}
+
+/* subject colours down the left edge of the rail */
+.site-nav__menu li:nth-child(5n + 1) .notebook-tab { border-left-color: var(--tab-1); }
+.site-nav__menu li:nth-child(5n + 2) .notebook-tab { border-left-color: var(--tab-2); }
+.site-nav__menu li:nth-child(5n + 3) .notebook-tab { border-left-color: var(--tab-3); }
+.site-nav__menu li:nth-child(5n + 4) .notebook-tab { border-left-color: var(--tab-4); }
+.site-nav__menu li:nth-child(5n + 5) .notebook-tab { border-left-color: var(--tab-5); }
+
+.site-nav__menu .notebook-tab:hover {
+  background: var(--paper-page);
+  color: var(--ink);
+}
+
+/* current page: tab pulls out past the rail and merges into the sheet */
+.site-nav__menu .notebook-tab.is-active,
+.site-nav__menu .notebook-tab[aria-current="page"] {
+  margin-right: -16px;
+  padding-right: calc(var(--sp-4) + 14px);
+  background: var(--paper-page);
+  color: var(--ink);
+  font-weight: 700;
+  border-color: var(--ink-faint);
+  border-left-width: 5px;
+  box-shadow: 4px 0 10px -3px rgba(var(--ink-shadow), 0.3);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .site-nav__menu .notebook-tab {
+    transition: background-color 120ms ease, color 120ms ease, margin-right 120ms ease;
+  }
+
+  .site-nav__menu .notebook-tab:hover {
+    margin-right: -6px;
+  }
+}
+
+/* hamburger — only shown on the mobile top bar (responsive.css),
+   after JS removes [hidden] (no JS -> plain visible link list) */
+.site-nav__toggle {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: none;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.site-nav__toggle-bar {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+}
+
+/* =========================================================
+   9. SITE FOOTER  (shared chrome — components/footer.html)
+   "Closing notes" — the last sheet of every page.
+========================================================= */
+.site-footer {
+  background: var(--paper-page);
+}
+
+.site-footer__inner.notebook-page {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-4);
+  padding-block: var(--sp-8) var(--sp-9);
+  text-align: center;
+  /* a torn perforation marks the final sheet */
+  border-top: 2px dashed var(--rule-strong);
+  box-shadow: none;
+}
+
+.site-footer__logo {
+  width: 13rem;
+  height: auto;
+}
+
+.site-footer__tagline {
+  margin: 0;
+}
+
+.site-footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sp-1) var(--sp-4);
+  max-width: none;
+  font-family: var(--font-type);
+  font-size: var(--fs-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+}
+
+.site-footer__nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: var(--sp-2);
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+}
+
+.site-footer__nav a:hover {
+  color: var(--accent-deep);
+  border-bottom-color: currentColor;
+}
+
+.site-footer__legal {
+  margin: 0;
+  max-width: none;
+  font-size: var(--fs-eyebrow);
+  color: var(--ink-faint);
+}

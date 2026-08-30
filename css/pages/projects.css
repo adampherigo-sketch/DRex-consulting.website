@@ -1,0 +1,278 @@
+/* =========================================================
+   DRex Consulting — PROJECTS PAGE  (projects.html)
+
+   Layout only. Reuses the notebook visual system
+   (notebook.css) and the global tokens / typography /
+   buttons (style.css); never re-declares either.
+
+   Voice: taped photos + index-card field notes.
+
+   Load order: style.css -> notebook.css -> animations.css
+   -> pages/projects.css -> responsive.css
+========================================================= */
+
+.projects-hero,
+.projects-work,
+.projects-cta {
+  position: relative;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+.hero-page {
+  padding-block: var(--sp-8) var(--sp-9);
+}
+
+.projects-hero__content {
+  display: grid;
+  gap: var(--sp-6);
+}
+
+.projects-hero__intro {
+  display: grid;
+  gap: var(--sp-5);
+  max-width: 60ch;
+}
+
+.projects-hero__intro .section-heading {
+  margin-bottom: 0;
+}
+
+.projects-hero__lead {
+  margin: 0;
+  max-width: 52ch;
+}
+
+.projects-hero__note {
+  align-self: start;
+}
+
+/* 1025+ parks the field-note aside in the page's right margin,
+   clear of responsive.css's <=1024px adjustments */
+@media (min-width: 1025px) {
+  .projects-hero__content {
+    grid-template-columns: minmax(0, 1fr) minmax(180px, 14rem);
+    gap: var(--sp-8);
+    align-items: start;
+  }
+
+  .projects-hero__note {
+    margin-top: var(--sp-7);
+  }
+}
+
+/* =========================================================
+   FIELD NOTES  (01)  — category filter
+========================================================= */
+.project-filter {
+  margin-bottom: var(--sp-6);
+}
+
+.project-filter__label {
+  margin: 0 0 var(--sp-2);
+  max-width: none;
+  font-family: var(--font-type);
+  font-size: var(--fs-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+}
+
+/* the tab row hangs off a ruled baseline like real index tabs.
+   .notebook-tabs (notebook.css) already handles the flex row,
+   the tab shapes, hover, and the [aria-pressed="true"] active
+   look — this only adds the baseline and the subject colours,
+   which notebook.css keys to `> li` (absent here). */
+.project-filter__tabs {
+  gap: 2px 0;
+  border-bottom: 2px solid var(--rule-strong);
+}
+
+.project-filter__tabs .notebook-tab:nth-child(1) { border-top-color: var(--tab-1); }
+.project-filter__tabs .notebook-tab:nth-child(2) { border-top-color: var(--tab-2); }
+.project-filter__tabs .notebook-tab:nth-child(3) { border-top-color: var(--tab-3); }
+.project-filter__tabs .notebook-tab:nth-child(4) { border-top-color: var(--tab-4); }
+.project-filter__tabs .notebook-tab:nth-child(5) { border-top-color: var(--tab-5); }
+
+.project-filter__status {
+  margin: var(--sp-3) 0 0;
+  max-width: none;
+  font-family: var(--font-type);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+
+/* =========================================================
+   FIELD NOTES  (01)  — card grid
+========================================================= */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: var(--sp-6) var(--sp-5);
+  align-items: start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  max-width: 100%;
+  margin: 0;
+}
+
+/* filtered-out cards — [hidden] must win over the flex display
+   above (higher specificity, no !important needed) */
+.project-card[hidden] {
+  display: none;
+}
+
+/* labelled placeholder image block — hatched "photo" stand-in.
+   Same pattern the home page uses; redefined here because
+   css/pages/home.css is not loaded on this page. */
+.project-image-placeholder {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--paper-edge);
+  background: repeating-linear-gradient(
+    45deg,
+    var(--paper-edge) 0 10px,
+    var(--paper-page) 10px 20px
+  );
+}
+
+.project-image-placeholder span {
+  padding: var(--sp-1) var(--sp-3);
+  background: var(--paper-page);
+  font-family: var(--font-type);
+  font-size: var(--fs-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+}
+
+.project-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.project-type {
+  margin: 0;
+  max-width: none;
+  font-family: var(--font-type);
+  font-size: var(--fs-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+.project-card__name {
+  margin: 0;
+  font-family: var(--font-type);
+  font-size: var(--fs-h3);
+}
+
+.project-card__notes {
+  margin: var(--sp-3) 0 0;
+  display: grid;
+  gap: var(--sp-3);
+}
+
+.project-card__notes > div {
+  display: grid;
+  gap: 2px;
+}
+
+.project-card__notes dt {
+  font-family: var(--font-type);
+  font-size: var(--fs-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+}
+
+.project-card__notes dd {
+  margin: 0;
+  max-width: none;
+  color: var(--ink-soft);
+}
+
+.project-card .text-link {
+  align-self: start;
+  margin-top: var(--sp-3);
+}
+
+/* -----------------------------------------------------------
+   PER-CARD TILT
+   Kept off :hover / :focus-within so notebook.css's
+   straighten-on-interaction rule (which is motion-gated) can
+   take over. A static rotation is not "motion", so it stays
+   applied under prefers-reduced-motion too.
+----------------------------------------------------------- */
+.project-card:not(:hover):not(:focus-within) {
+  transform: rotate(-1.8deg);
+}
+
+.project-card:nth-child(even):not(:hover):not(:focus-within) {
+  transform: rotate(1.8deg);
+}
+
+/* readability first on small screens — ease the tilt toward flat */
+@media (max-width: 768px) {
+  .project-card:not(:hover):not(:focus-within) {
+    transform: rotate(-0.8deg);
+  }
+
+  .project-card:nth-child(even):not(:hover):not(:focus-within) {
+    transform: rotate(0.8deg);
+  }
+}
+
+/* =========================================================
+   FIELD NOTES  (01)  — "more coming" aside
+========================================================= */
+.projects-more-note {
+  margin: var(--sp-7) 0 0;
+  max-width: none;
+  text-align: center;
+}
+
+/* =========================================================
+   CALL TO ACTION  (02)
+========================================================= */
+.projects-cta__page {
+  text-align: center;
+  padding-block: var(--sp-8) var(--sp-9);
+}
+
+.projects-cta__inner {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-4);
+  max-width: 46ch;
+  margin-inline: auto;
+}
+
+.projects-cta__inner .handwritten-note {
+  margin: 0;
+}
+
+.projects-cta__inner h2 {
+  margin: 0;
+}
+
+.projects-cta__inner p {
+  margin: 0;
+  max-width: none;
+}
+
+.projects-cta__action {
+  justify-content: center;
+  margin-top: var(--sp-3);
+}

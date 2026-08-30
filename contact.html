@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Contact | DRex Consulting</title>
+
+  <meta
+    name="description"
+    content="Tell DRex Consulting what you're working on, what's getting in the way, or what you're trying to figure out. Start the conversation."
+  >
+
+  <!-- =========================
+       FAVICON + SOCIAL
+  ========================== -->
+  <link rel="icon" type="image/png" href="assets/images/logo/drex-mark.png">
+  <link rel="apple-touch-icon" href="assets/images/logo/apple-touch-icon.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="DRex Consulting">
+  <meta property="og:title" content="Contact | DRex Consulting">
+  <meta property="og:description" content="Tell DRex Consulting what you're working on, what's getting in the way, or what you're trying to figure out. Start the conversation.">
+  <meta property="og:image" content="assets/images/logo/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- =========================
+       FONTS
+       Self-hosted — see css/fonts.css and assets/fonts/.
+  ========================== -->
+  <link
+    rel="preload"
+    href="assets/fonts/inter-latin.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin
+  >
+  <link
+    rel="preload"
+    href="assets/fonts/caveat-latin.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin
+  >
+
+  <link rel="stylesheet" href="css/fonts.css">
+
+  <!-- =========================
+       GLOBAL CSS
+  ========================== -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/notebook.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/pages/contact.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+
+  <a class="skip-link" href="#main-content">
+    Skip to main content
+  </a>
+
+
+  <!-- ========================================
+       SHARED NAVIGATION
+       Loaded from components/navbar.html
+  ========================================= -->
+  <div
+    id="navbar-container"
+    data-component="navbar"
+  ></div>
+
+
+  <main id="main-content">
+
+
+    <!-- ========================================
+         HERO
+    ========================================= -->
+    <section
+      class="contact-hero notebook-section"
+      id="contact-hero"
+      aria-labelledby="contact-hero-title"
+    >
+
+      <div class="notebook-page contact-hero-page">
+
+        <div
+          class="notebook-margin-line"
+          aria-hidden="true"
+        ></div>
+
+        <div
+          class="notebook-holes"
+          aria-hidden="true"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <div class="section-content">
+
+          <header class="section-heading">
+
+            <p class="eyebrow">
+              Start a Conversation
+            </p>
+
+            <h1 id="contact-hero-title">
+              What's in your notebook?
+            </h1>
+
+          </header>
+
+          <div class="contact-hero-copy">
+            <p class="lead">
+              Tell us what you're working on, what's getting
+              in the way, or what you're trying to figure out.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================
+         CONTACT FORM  (01)
+    ========================================= -->
+    <section
+      class="contact-form-section notebook-section"
+      id="contact"
+      aria-labelledby="contact-form-title"
+    >
+
+      <div class="notebook-page" data-reveal>
+
+        <div
+          class="notebook-margin-line"
+          aria-hidden="true"
+        ></div>
+
+        <div class="section-number" aria-hidden="true">
+          01
+        </div>
+
+        <div class="section-content">
+
+          <header class="section-heading">
+
+            <p class="eyebrow">
+              Write it down
+            </p>
+
+            <h2 id="contact-form-title">
+              Tell us what you're working on
+            </h2>
+
+            <p class="section-intro">
+              A few lines is plenty to get started. The more
+              context you can give, the more useful our first
+              reply will be.
+            </p>
+
+          </header>
+
+
+          <form
+            class="contact-form"
+            id="contact-form"
+            name="contact"
+            method="POST"
+            action="/"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            novalidate
+          >
+
+            <!-- Netlify form identifier -->
+            <input type="hidden" name="form-name" value="contact">
+
+            <!-- Honeypot: hidden from people, catches bots -->
+            <p class="u-visually-hidden" aria-hidden="true">
+              <label>
+                Don't fill this out if you're human:
+                <input name="bot-field" tabindex="-1" autocomplete="off">
+              </label>
+            </p>
+
+
+            <div class="form-field">
+              <label for="cf-name">Name</label>
+              <input
+                type="text"
+                id="cf-name"
+                name="name"
+                required
+                autocomplete="name"
+                aria-describedby="cf-name-error"
+              >
+              <p class="field-error" id="cf-name-error" hidden></p>
+            </div>
+
+
+            <div class="form-field">
+              <label for="cf-email">Email</label>
+              <input
+                type="email"
+                id="cf-email"
+                name="email"
+                required
+                autocomplete="email"
+                aria-describedby="cf-email-error"
+              >
+              <p class="field-error" id="cf-email-error" hidden></p>
+            </div>
+
+
+            <div class="form-field">
+              <label for="cf-org">
+                Organization / Company
+                <span class="field-optional">(optional)</span>
+              </label>
+              <input
+                type="text"
+                id="cf-org"
+                name="organization"
+                autocomplete="organization"
+              >
+            </div>
+
+
+            <div class="form-field">
+              <label for="cf-working">What are you working on?</label>
+              <textarea
+                id="cf-working"
+                name="working-on"
+                rows="4"
+                required
+                aria-describedby="cf-working-error"
+              ></textarea>
+              <p class="field-error" id="cf-working-error" hidden></p>
+            </div>
+
+
+            <div class="form-field">
+              <label for="cf-help">How can DRex help?</label>
+              <textarea
+                id="cf-help"
+                name="how-can-drex-help"
+                rows="6"
+                required
+                aria-describedby="cf-help-error"
+              ></textarea>
+              <p class="field-error" id="cf-help-error" hidden></p>
+            </div>
+
+
+            <fieldset class="form-field">
+              <legend>
+                Preferred contact method
+                <span class="field-optional">(optional)</span>
+              </legend>
+              <div class="radio-row">
+                <label class="radio-option">
+                  <input type="radio" name="preferred-contact" value="Email">
+                  Email
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="preferred-contact" value="Phone">
+                  Phone
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="preferred-contact" value="Either">
+                  Either
+                </label>
+              </div>
+            </fieldset>
+
+
+            <div class="form-actions">
+              <button
+                type="submit"
+                class="button button-primary notebook-button"
+              >
+                Send the Note
+                <span aria-hidden="true">&rarr;</span>
+              </button>
+            </div>
+
+            <p
+              class="form-status"
+              role="status"
+              aria-live="polite"
+              hidden
+            ></p>
+
+          </form>
+
+
+          <p class="handwritten-note contact-form-note">
+            No polished pitch required. Just tell us what's going on.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================
+         OTHER WAYS TO REACH US  (02)
+    ========================================= -->
+    <section
+      class="contact-alt notebook-section"
+      id="other-ways"
+      aria-labelledby="other-ways-title"
+    >
+
+      <div class="notebook-page" data-reveal>
+
+        <div
+          class="notebook-margin-line"
+          aria-hidden="true"
+        ></div>
+
+        <div class="section-number" aria-hidden="true">
+          02
+        </div>
+
+        <div class="section-content">
+
+          <div class="contact-alt-main">
+
+            <header class="section-heading">
+
+              <p class="eyebrow">
+                In the margins
+              </p>
+
+              <h2 id="other-ways-title">
+                Other ways to reach us
+              </h2>
+
+              <p class="section-intro">
+                Direct contact details are still being set up.
+                For now, the form above is the best way to
+                get a note to us.
+              </p>
+
+            </header>
+
+            <ul class="alt-contact-list">
+              <li>
+                <span class="alt-label">Email</span>
+                <span class="alt-value">Coming soon</span>
+              </li>
+              <li>
+                <span class="alt-label">Phone</span>
+                <span class="alt-value">Coming soon</span>
+              </li>
+              <li>
+                <span class="alt-label">Social</span>
+                <span class="alt-value">Coming soon</span>
+              </li>
+            </ul>
+
+          </div>
+
+          <aside class="alt-note sticky-note sticky-note--mint" role="note" aria-label="A note on email">
+            <span class="sticky-note-pin" aria-hidden="true"></span>
+            <p>
+              Once email is live, you'll be able to write to
+              us directly. Until then, send the note.
+            </p>
+          </aside>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+  </main>
+
+
+  <!-- ========================================
+       SHARED FOOTER
+       Loaded from components/footer.html
+  ========================================= -->
+  <div
+    id="footer-container"
+    data-component="footer"
+  ></div>
+
+
+  <!-- ========================================
+       JAVASCRIPT
+  ========================================= -->
+  <script src="js/components.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/contact.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+</html>

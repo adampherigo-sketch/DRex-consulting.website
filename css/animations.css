@@ -1,0 +1,122 @@
+/* =========================================================
+   DRex Consulting — ANIMATIONS
+   Keyframe library + the scroll-reveal system, nothing else.
+
+   Component-coupled hovers (sticky notes, taped cards, tabs,
+   buttons) live in notebook.css / style.css and are NOT
+   repeated here. underline-draw / sticky-lift / tab-nudge
+   mirror transition-based effects already wired in
+   notebook.css; they are defined here as the shared keyframe
+   library the brief calls for, available to page scripts and
+   inner pages.
+
+   Load order: style.css -> notebook.css -> animations.css
+   -> pages/<page>.css -> responsive.css
+
+   Every non-essential motion is gated behind
+   @media (prefers-reduced-motion: no-preference). The reveal
+   system fully disables itself under `reduce` and never
+   hides content when JS is absent.
+========================================================= */
+
+/* ---------------------------------------------------------
+   1. KEYFRAMES
+--------------------------------------------------------- */
+
+/* hero-heading squiggle drawing itself in from the left */
+@keyframes underline-draw {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* generic scroll-reveal: fade + rise */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* sticky note peeling up off the page */
+@keyframes sticky-lift {
+  from {
+    transform: rotate(2deg) translateY(0);
+    box-shadow: var(--shadow-lift);
+  }
+  to {
+    transform: rotate(1deg) translateY(-3px);
+    box-shadow: var(--shadow-page);
+  }
+}
+
+/* idle bob for hand-drawn doodles — max 6px of travel */
+@keyframes float-doodle {
+  0%,
+  100% { transform: translateY(0); }
+  50%  { transform: translateY(-6px); }
+}
+
+/* index tab nudging up toward the reader */
+@keyframes tab-nudge {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-2px); }
+}
+
+/* ---------------------------------------------------------
+   2. SCROLL-REVEAL SYSTEM
+   [data-reveal] starts hidden ONLY when <html> carries `.js`
+   (added synchronously by js/components.js). No JS -> the
+   selector never matches -> content is always visible.
+   js/animations.js adds `.is-visible` via IntersectionObserver
+   (or immediately, in bulk, under reduced motion).
+--------------------------------------------------------- */
+html.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+html.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal] {
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
+    /* optional subtle stagger: set `--reveal-delay: 80ms` etc. inline */
+    transition-delay: var(--reveal-delay, 0s);
+  }
+}
+
+/* Reduced motion: force everything visible and static, even
+   if the observer never runs. */
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal],
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---------------------------------------------------------
+   3. AMBIENT MOTION (motion-safe only)
+   Float just the arrow glyph so each doodle keeps the static
+   rotation set on its container in notebook.css.
+--------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-doodle > span,
+  .cta-doodle > span {
+    animation: float-doodle 6s ease-in-out infinite;
+  }
+
+  .cta-doodle > span {
+    animation-duration: 7s;
+  }
+}

@@ -1,0 +1,267 @@
+/* =========================================================
+   DRex Consulting — CONTACT PAGE  (contact.html)
+
+   Layout only. Reuses the notebook visual system
+   (notebook.css) and the global tokens / typography /
+   buttons (style.css); never re-declares either.
+
+   Voice: a blank ruled notebook page (the form) + a sticky
+   note (the "other ways to reach us" aside).
+
+   Load order: style.css -> notebook.css -> animations.css
+   -> pages/contact.css -> responsive.css
+========================================================= */
+
+.contact-hero,
+.contact-form-section,
+.contact-alt {
+  position: relative;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+.contact-hero-page {
+  padding-block: var(--sp-8) var(--sp-8);
+}
+
+.contact-hero-copy {
+  max-width: 54ch;
+}
+
+.contact-hero-copy .lead {
+  margin: 0;
+}
+
+/* =========================================================
+   CONTACT FORM  (01)
+========================================================= */
+.contact-form {
+  /* page-scoped, darker red that clears 4.5:1 on paper for
+     real error text (--margin-red is too light for body size) */
+  --contact-error: #a5372e;
+
+  display: grid;
+  gap: var(--sp-6);
+  max-width: 42rem;
+  margin-top: var(--sp-6);
+}
+
+.form-field {
+  display: grid;
+  gap: var(--sp-2);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.form-field > label,
+.contact-form legend {
+  font-family: var(--font-type);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding: 0;
+}
+
+.contact-form legend {
+  margin-bottom: var(--sp-3);
+}
+
+.field-optional {
+  margin-left: 0.45em;
+  font-family: var(--font-hand);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-soft);
+}
+
+/* --- inputs: underline style; textareas: lightly boxed --- */
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+  width: 100%;
+  padding: 0.65em 0.4em;
+  min-height: 44px;
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--rule-strong);
+  border-radius: 0;
+}
+
+.contact-form textarea {
+  padding: 0.65em 0.6em;
+  border: 2px solid var(--rule-strong);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.4);
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.contact-form input:hover,
+.contact-form textarea:hover {
+  border-color: var(--accent);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--accent-deep);
+}
+
+.contact-form [aria-invalid="true"] {
+  border-color: var(--contact-error);
+}
+
+/* --- inline field errors --- */
+.field-error {
+  margin: 0;
+  max-width: none;
+  font-weight: 600;
+  color: var(--contact-error);
+}
+
+.field-error::before {
+  content: "\2717\00a0"; /* ✗ + nbsp */
+}
+
+/* --- radio group --- */
+.radio-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-5);
+}
+
+.radio-option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 44px;
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.radio-option input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+/* --- submit + status --- */
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+.form-status {
+  margin: 0;
+  max-width: none;
+  padding: var(--sp-4);
+  border-left: 4px solid var(--rule-strong);
+  border-radius: var(--radius);
+  background: var(--paper-edge);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.form-status--success {
+  border-left-color: var(--tab-3);
+  background: var(--sticky-mint);
+}
+
+.form-status--notice {
+  border-left-color: var(--tab-4);
+  background: var(--sticky-orange);
+}
+
+.form-status--error {
+  border-left-color: var(--contact-error);
+  background: #f4ddd7;
+}
+
+/* --- handwritten annotation beneath the form --- */
+.contact-form-note {
+  margin-top: var(--sp-6);
+}
+
+/* =========================================================
+   OTHER WAYS TO REACH US  (02)
+========================================================= */
+.contact-alt .section-content {
+  display: grid;
+  gap: var(--sp-6);
+}
+
+.contact-alt-main {
+  min-width: 0;
+}
+
+.alt-contact-list {
+  list-style: none;
+  margin: var(--sp-5) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--sp-3);
+  max-width: 34rem;
+}
+
+.alt-contact-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35em 0.75em;
+  margin: 0;
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--paper-edge);
+}
+
+.alt-contact-list .alt-label {
+  min-width: 5rem;
+  font-family: var(--font-type);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.alt-contact-list .alt-value {
+  color: var(--ink-soft);
+}
+
+.alt-note {
+  justify-self: start;
+  max-width: 15rem;
+}
+
+@media (min-width: 760px) {
+  .contact-alt .section-content {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: var(--sp-8);
+  }
+
+  .alt-note {
+    margin-top: var(--sp-7);
+  }
+}
+
+/* =========================================================
+   NARROW PHONES
+========================================================= */
+@media (max-width: 430px) {
+  .form-actions .button {
+    width: 100%;
+    max-width: 22rem;
+  }
+}

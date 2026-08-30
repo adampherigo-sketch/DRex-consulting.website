@@ -1,0 +1,229 @@
+/* =========================================================
+   DRex Consulting — RESPONSIVE
+   Shared structural breakpoints ONLY: 1024 / 768 / 430.
+
+   Mobile-first base styles live in style.css, notebook.css
+   and each page's CSS. This file holds the cross-page
+   structural shifts and token adjustments. No page-specific
+   layout rules belong here.
+
+   Loads LAST in every <head> so these overrides win.
+========================================================= */
+
+/* ---------------------------------------------------------
+   GLOBAL OVERFLOW BACKSTOPS
+   Nothing may exceed the viewport width.
+--------------------------------------------------------- */
+img,
+figure,
+svg,
+video,
+canvas,
+table,
+pre {
+  max-width: 100%;
+}
+
+figure {
+  margin-inline: 0;
+}
+
+pre {
+  overflow-x: auto;
+}
+
+/* ---------------------------------------------------------
+   NAV — below 1024px the left binding rail folds into a
+   sticky top bar.
+   No JS  → the tab list sits, always visible, on its own row
+            under the brand (stacked, full-width tabs).
+   JS on  → `<html>` gets `.js`; a hamburger appears and the
+            list becomes a toggle-controlled dropdown panel
+            (absolute, so opening it never shifts page content).
+   Keyed to the js/main.js contract: toggle [hidden] removed by
+   JS, menu [hidden] / .is-open, aria-expanded swap.
+--------------------------------------------------------- */
+@media (max-width: 1023.98px) {
+  .site-nav {
+    position: sticky;
+    inset: 0 0 auto 0;                 /* top bar */
+    width: auto;
+    border-right: none;
+    border-bottom: 2px solid var(--rule-strong);
+  }
+
+  .site-nav__inner {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-2) var(--sp-4);
+    width: auto;
+    min-height: var(--nav-h);
+    padding: var(--sp-2) var(--sp-4);
+    overflow: visible;
+  }
+
+  .site-nav__brand {
+    margin-right: auto;
+    padding-right: 0;
+  }
+
+  .site-nav__mark {
+    display: none;
+  }
+
+  .site-nav__logo {
+    display: block;
+    width: 7.5rem;
+    height: auto;
+  }
+
+  /* no-JS: stacked full-width tab list under the bar */
+  .site-nav__menu {
+    flex-basis: 100%;
+    width: 100%;
+  }
+
+  .site-nav__menu .notebook-tab {
+    width: 100%;
+    margin-right: 0;
+    border-right: 2px solid var(--rule-strong);
+    border-radius: var(--radius);
+  }
+
+  .site-nav__menu .notebook-tab.is-active,
+  .site-nav__menu .notebook-tab[aria-current="page"] {
+    margin-right: 0;
+    padding-right: var(--sp-4);
+    box-shadow: inset 3px 0 0 var(--accent);
+  }
+
+  /* JS present: hamburger + dropdown panel */
+  .site-nav__toggle:not([hidden]) {
+    display: inline-flex;
+  }
+
+  html.js .site-nav__inner {
+    flex-wrap: nowrap;
+  }
+
+  html.js .site-nav__menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: auto;
+    padding: var(--sp-3);
+    background: var(--paper);
+    border-bottom: 2px solid var(--rule-strong);
+    box-shadow: var(--shadow-lift);
+    z-index: 99;
+  }
+
+  html.js .site-nav__menu[hidden] {
+    display: none;
+  }
+
+  html.js .site-nav__menu.is-open {
+    display: flex;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* if JS left the menu [hidden] after crossing the boundary,
+     the rail must still show it */
+  .site-nav__menu[hidden] {
+    display: flex;
+  }
+}
+
+/* ---------------------------------------------------------
+   <= 1023px  — tighten the sheet gutters
+--------------------------------------------------------- */
+@media (max-width: 1023.98px) {
+  :root {
+    --page-max: 960px;
+    --margin-gutter: 3rem;
+  }
+
+  .section-number {
+    font-size: clamp(2rem, 1.4rem + 2.5vw, 3rem);
+  }
+
+  /* not enough open sheet beside the hero copy for the corner doodle */
+  .hero-doodle {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------
+   <= 768px  — single column, decoration steps back
+--------------------------------------------------------- */
+@media (max-width: 768px) {
+  :root {
+    --sp-9: 64px;
+    --margin-gutter: 2.25rem;
+  }
+
+  /* hand-drawn doodles are noise on small screens
+     (.hero-doodle is already hidden <=1024px above) */
+  .cta-doodle {
+    display: none;
+  }
+
+  /* decorative section watermark collides with wrapped headings */
+  .section-number {
+    display: none;
+  }
+
+  /* gutter aside flows inline with a left accent rule */
+  .margin-note {
+    max-width: none;
+    border-left: 3px solid var(--margin-red);
+    padding-left: var(--sp-3);
+  }
+
+  /* sticky notes centre and settle toward flat */
+  .sticky-note {
+    margin-inline: auto;
+    transform: rotate(-1deg);
+  }
+
+  .paper-note {
+    transform: none;
+  }
+
+  /* shared multi-column blocks collapse to one column
+     (page CSS may also do this; identical result) */
+  .intro-grid,
+  .why-grid,
+  .approach-list,
+  .service-list,
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------------------------------------
+   <= 430px  — tightest phones
+--------------------------------------------------------- */
+@media (max-width: 430px) {
+  :root {
+    --margin-gutter: 1.5rem;
+  }
+
+  .notebook-page {
+    /* keep the ruled-line origin in sync with the reduced top padding */
+    --rule-offset: calc(var(--sp-6) + 8px);
+    padding-top: var(--sp-6);
+    padding-bottom: var(--sp-7);
+    padding-right: var(--sp-4);
+  }
+
+  /* primary actions go full-width (capped) */
+  .hero-actions .button,
+  .section-action .button {
+    width: 100%;
+    max-width: 22rem;
+  }
+}

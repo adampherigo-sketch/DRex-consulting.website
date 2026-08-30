@@ -1,0 +1,569 @@
+/* =========================================================
+   DRex Consulting — NOTEBOOK VISUAL SYSTEM
+   The reusable "composition notebook" components shared by
+   every page: ruled paper surface, margin line, punch holes,
+   handwritten accents, sticky notes, taped cards, index tabs,
+   highlights, checkmarks, doodles.
+
+   All decoration is pure CSS: gradients, clip-path, and tiny
+   inline SVG data: URIs. No external or heavy assets.
+
+   Loads AFTER style.css (tokens) and BEFORE page CSS.
+   Every non-essential transition/animation is gated behind
+   @media (prefers-reduced-motion: no-preference).
+========================================================= */
+
+/* ---------------------------------------------------------
+   THE PAGE SURFACE
+--------------------------------------------------------- */
+.notebook-page {
+  /* top padding and the ruled-line origin move together via this var
+     (overridden with the padding in responsive.css at <=430px) */
+  --rule-offset: calc(var(--sp-8) + 8px);
+  position: relative;
+  /* a full sheet of notebook paper — no card frame, no float. Sheets
+     tile down the page; flush to the left binding, capped so they gain
+     an edge (with the darker "desk" showing) on very wide screens. */
+  max-width: var(--sheet-max);
+  margin-inline: 0 auto;
+  padding: var(--sp-8) var(--sp-7) var(--sp-9) var(--margin-gutter);
+  background-color: var(--paper-page);
+  /* layer 1: faint paper grain · layer 2: ruled blue lines */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 31px,
+      var(--rule) 31px 32px
+    );
+  background-repeat: repeat, repeat;
+  background-position: 0 0, 0 var(--rule-offset);
+  /* the seam where a new sheet begins */
+  border-top: 1px solid var(--paper-edge);
+  box-shadow: inset 0 7px 10px -9px rgba(var(--ink-shadow), 0.22);
+  /* clip rotated decoration, but leave room for focus rings on
+     interactive elements sitting near the page edge */
+  overflow: hidden;
+  overflow: clip;
+  overflow-clip-margin: 8px;
+}
+
+/* the first sheet on a page opens clean, with no seam above it */
+.notebook-section:first-of-type > .notebook-page {
+  border-top: none;
+  box-shadow: none;
+}
+
+/* ---------------------------------------------------------
+   RED MARGIN LINE
+--------------------------------------------------------- */
+.notebook-margin-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--margin-line-x);
+  border-left: 2px solid var(--margin-red);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------
+   PUNCH HOLES
+   The fixed left binding rail is now the notebook's spine, so
+   per-sheet punch holes are redundant. Kept in markup (harmless,
+   aria-hidden) but not painted.
+--------------------------------------------------------- */
+.notebook-holes {
+  display: none;
+}
+
+/* ---------------------------------------------------------
+   SECTION NUMBER (decorative, top-right)
+--------------------------------------------------------- */
+.section-number {
+  position: absolute;
+  top: var(--sp-5);
+  right: var(--sp-6);
+  font-family: var(--font-type);
+  font-size: clamp(2.5rem, 1.4rem + 4.5vw, 4.5rem);
+  line-height: 1;
+  color: var(--ink-faint);
+  opacity: 0.35;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ---------------------------------------------------------
+   SECTION HEADING GROUP
+--------------------------------------------------------- */
+.section-heading {
+  margin-bottom: var(--sp-6);
+}
+
+.section-heading .eyebrow {
+  margin-bottom: var(--sp-2);
+}
+
+.section-heading h2 {
+  margin-bottom: var(--sp-3);
+}
+
+.section-heading h2:last-child {
+  margin-bottom: 0;
+}
+
+.section-intro {
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: var(--text-col);
+  margin: 0;
+}
+
+/* ---------------------------------------------------------
+   HANDWRITTEN ACCENTS
+--------------------------------------------------------- */
+.handwritten-note {
+  display: inline-block;
+  font-family: var(--font-hand);
+  font-size: var(--fs-hand);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--accent-deep);
+  transform: rotate(-2deg);
+  max-width: none;
+}
+
+.handwritten-word {
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: 1.12em;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.handwritten-link {
+  font-family: var(--font-hand);
+  font-size: var(--fs-hand);
+  font-weight: 600;
+  color: var(--accent);
+  border-bottom-color: currentColor;
+}
+
+.handwritten-link:hover {
+  color: var(--accent-deep);
+}
+
+/* ---------------------------------------------------------
+   DRAWN UNDERLINE (hero heading squiggle)
+   Visible by default; animates the stroke when .is-visible
+   is added by animations.js (only when html.js is present).
+--------------------------------------------------------- */
+.drawn-underline {
+  width: clamp(140px, 42%, 300px);
+  height: 14px;
+  margin-top: var(--sp-2);
+  background: center / 100% 100% no-repeat
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='14'%3E%3Cpath d='M2 9 Q 22 2 42 7 T 82 7 T 122 7 T 162 7 T 202 7 T 242 7 T 298 6' fill='none' stroke='%23cf6b5c' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+  transform-origin: left center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js .drawn-underline {
+    transform: scaleX(0);
+  }
+
+  html.js .drawn-underline.is-visible {
+    transform: scaleX(1);
+    transition: transform 0.6s ease;
+  }
+}
+
+/* ---------------------------------------------------------
+   STICKY NOTES
+--------------------------------------------------------- */
+.sticky-note {
+  position: relative;
+  display: block;
+  max-width: 230px;
+  padding: var(--sp-5) var(--sp-4) var(--sp-4);
+  background: var(--sticky-yellow);
+  color: var(--ink-soft);
+  box-shadow: var(--shadow-lift);
+  transform: rotate(2deg);
+}
+
+.sticky-note p {
+  margin: 0;
+  max-width: none;
+  font-family: var(--font-hand);
+  font-size: var(--fs-hand);
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+
+.sticky-note-pin {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e2554a, #a5372e);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
+}
+
+.sticky-note--orange {
+  background: var(--sticky-orange);
+}
+
+.sticky-note--mint {
+  background: var(--sticky-mint);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sticky-note {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .sticky-note:hover,
+  .sticky-note:focus-within {
+    transform: rotate(1deg) translateY(-3px);
+    box-shadow: var(--shadow-page);
+  }
+}
+
+/* ---------------------------------------------------------
+   PAPER NOTE (torn-edge card)
+--------------------------------------------------------- */
+.paper-note {
+  position: relative;
+  padding: var(--sp-5) var(--sp-5) var(--sp-7);
+  background-color: var(--paper-page);
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 27px,
+      var(--rule) 27px 28px
+    );
+  background-position: 0 var(--sp-6);
+  /* torn bottom edge; drop-shadow follows the clipped shape */
+  clip-path: polygon(
+    0 0, 100% 0, 100% 94%,
+    94% 100%, 86% 96%, 74% 100%, 62% 96%,
+    50% 100%, 38% 96%, 26% 100%, 14% 96%, 6% 100%, 0 96%
+  );
+  filter: drop-shadow(0 10px 18px rgba(var(--ink-shadow), 0.25));
+}
+
+.paper-note-heading {
+  margin: 0 0 var(--sp-2);
+  font-family: var(--font-type);
+  font-size: var(--fs-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+}
+
+.paper-note-main {
+  margin: 0;
+  max-width: 34ch;
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.paper-note-doodle {
+  position: absolute;
+  right: var(--sp-4);
+  bottom: var(--sp-5);
+  font-family: var(--font-hand);
+  font-size: 1.7rem;
+  line-height: 1;
+  color: var(--margin-red);
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------
+   MARGIN NOTE (gutter aside)
+--------------------------------------------------------- */
+.margin-note {
+  font-family: var(--font-hand);
+  font-size: var(--fs-hand);
+  line-height: 1.3;
+  color: var(--ink-faint);
+  max-width: 220px;
+}
+
+.margin-note p {
+  margin: 0 0 var(--sp-1);
+  max-width: none;
+  font: inherit;
+  color: var(--ink-soft);
+}
+
+/* the trailing sub-text span (not the star) */
+.margin-note > span:not(.margin-note-star) {
+  display: block;
+  font-size: 0.85em;
+  color: var(--ink-faint);
+}
+
+.margin-note .margin-note-star {
+  display: inline;
+  color: var(--margin-red);
+  font-size: 1.25em;
+  line-height: 1;
+}
+
+/* narrow screens: .margin-note flows inline with a left accent rule
+   — see responsive.css @media (max-width: 768px) */
+
+/* ---------------------------------------------------------
+   TAPE
+--------------------------------------------------------- */
+.tape {
+  width: 90px;
+  height: 26px;
+  background: var(--tape);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  transform: rotate(-3deg);
+  pointer-events: none;
+}
+
+.tape-top {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  margin-left: -45px;
+  z-index: 2;
+}
+
+/* ---------------------------------------------------------
+   TAPED CARD
+--------------------------------------------------------- */
+.taped-card {
+  position: relative;
+  padding: var(--sp-5);
+  background: var(--paper-page);
+  border: 1px solid var(--paper-edge);
+  box-shadow: var(--shadow-lift);
+  transform: rotate(-1deg);
+}
+
+.taped-card:nth-child(even) {
+  transform: rotate(1deg);
+}
+
+/* explicit tilt utilities (override :nth-child when set) */
+.tilt-l { transform: rotate(-2deg); }
+.tilt-r { transform: rotate(2deg); }
+.tilt-0 { transform: rotate(0); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .taped-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .taped-card:hover,
+  .taped-card:focus-within {
+    transform: rotate(0) translateY(-4px);
+    box-shadow: var(--shadow-page);
+  }
+}
+
+/* ---------------------------------------------------------
+   NOTEBOOK TABS (nav + filter bars)
+--------------------------------------------------------- */
+.notebook-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* neutralise the global li spacing so tabs sit flush on the rule */
+.notebook-tabs li {
+  margin: 0;
+}
+
+.notebook-tab {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: var(--sp-2) var(--sp-4);
+  margin-inline: -2px;
+  font-family: var(--font-type);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-decoration: none;
+  background: var(--paper-edge);
+  border: 2px solid var(--rule-strong);
+  border-bottom: none;
+  border-top: 3px solid var(--accent);
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+}
+
+.notebook-tab:hover {
+  background: var(--paper-page);
+  color: var(--ink);
+}
+
+/* subject-tab colour coding */
+.notebook-tabs > li:nth-child(5n + 1) .notebook-tab { border-top-color: var(--tab-1); }
+.notebook-tabs > li:nth-child(5n + 2) .notebook-tab { border-top-color: var(--tab-2); }
+.notebook-tabs > li:nth-child(5n + 3) .notebook-tab { border-top-color: var(--tab-3); }
+.notebook-tabs > li:nth-child(5n + 4) .notebook-tab { border-top-color: var(--tab-4); }
+.notebook-tabs > li:nth-child(5n + 5) .notebook-tab { border-top-color: var(--tab-5); }
+
+/* active / current: raised, opaque, connected to the page */
+.notebook-tab.is-active,
+.notebook-tab[aria-current="page"],
+.notebook-tab[aria-pressed="true"] {
+  background: var(--paper-page);
+  color: var(--ink);
+  font-weight: 700;
+  box-shadow: 0 -2px 6px -2px rgba(var(--ink-shadow), 0.25);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .notebook-tab {
+    transition: transform 120ms ease, background-color 120ms ease;
+  }
+
+  .notebook-tab:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* ---------------------------------------------------------
+   HIGHLIGHT + CIRCLED
+--------------------------------------------------------- */
+.highlight {
+  background-image: linear-gradient(
+    180deg,
+    transparent 55%,
+    var(--highlighter) 55%
+  );
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding-inline: 0.08em;
+}
+
+.circled {
+  position: relative;
+  display: inline-block;
+  padding: 0.15em 0.55em;
+}
+
+.circled::after {
+  content: "";
+  position: absolute;
+  inset: -0.2em -0.15em;
+  background: center / 100% 100% no-repeat
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cellipse cx='60' cy='30' rx='55' ry='23' fill='none' stroke='%23cf6b5c' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------
+   CHECKMARKS
+--------------------------------------------------------- */
+.checkmark,
+.service-mark,
+.value-check {
+  display: inline-block;
+  font-family: var(--font-hand);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.service-mark {
+  font-size: 1.5em;
+  color: var(--margin-red);
+}
+
+.value-check {
+  font-size: 1.3em;
+  margin-right: 0.35em;
+}
+
+/* ---------------------------------------------------------
+   DOODLES
+--------------------------------------------------------- */
+.doodle,
+.doodle-arrow,
+.doodle-text,
+.hero-doodle,
+.cta-doodle {
+  font-family: var(--font-hand);
+  color: var(--pencil);
+  pointer-events: none;
+}
+
+.doodle-arrow,
+.hero-doodle > span,
+.cta-doodle > span {
+  display: inline-block;
+  font-size: clamp(2rem, 1.4rem + 3vw, 3.4rem);
+  line-height: 1;
+}
+
+.doodle-text,
+.hero-doodle p,
+.cta-doodle p {
+  margin: 0;
+  max-width: 18ch;
+  font-size: var(--fs-hand);
+  line-height: 1.25;
+}
+
+.doodle {
+  display: inline-block;
+  font-size: var(--fs-hand);
+}
+
+.hero-doodle {
+  transform: rotate(-4deg);
+}
+
+.cta-doodle {
+  transform: rotate(3deg);
+}
+
+/* ---------------------------------------------------------
+   INDEX CARD / FIELD NOTE (projects page card styles)
+--------------------------------------------------------- */
+.index-card,
+.field-note {
+  position: relative;
+  padding: var(--sp-5);
+  background-color: var(--paper-page);
+  border: 1px solid var(--paper-edge);
+  border-top: 2px solid var(--margin-red);
+  box-shadow: var(--shadow-lift);
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 27px,
+      var(--rule) 27px 28px
+    );
+  background-position: 0 var(--sp-6);
+}
+
+.index-card h3,
+.field-note h3 {
+  font-family: var(--font-type);
+  font-size: var(--fs-h3);
+  margin-bottom: var(--sp-3);
+}
+
+.field-note {
+  border-top-width: 3px;
+}

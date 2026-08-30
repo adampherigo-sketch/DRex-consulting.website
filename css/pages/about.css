@@ -1,0 +1,253 @@
+/* =========================================================
+   DRex Consulting — ABOUT PAGE  (about.html)
+
+   Layout rules unique to the About page only. Reuses the
+   notebook visual system (notebook.css) and the global
+   tokens / typography / buttons (style.css); it never
+   re-declares either system.
+
+   Voice devices: margin notes + handwritten philosophy.
+
+   Load order: style.css -> notebook.css -> animations.css
+   -> pages/about.css -> responsive.css
+========================================================= */
+
+/* section wrappers are positioning contexts for their
+   in-page decoration + section numbers */
+.about-hero,
+.about-story,
+.about-philosophy,
+.about-values,
+.about-cta {
+  position: relative;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+.about-hero-page {
+  padding-block: var(--sp-8) var(--sp-9);
+}
+
+.about-hero-layout {
+  display: grid;
+  gap: var(--sp-6);
+}
+
+.about-hero-copy {
+  display: grid;
+  gap: var(--sp-4);
+  align-content: start;
+  max-width: 60ch;
+}
+
+.about-hero-copy .section-heading {
+  margin-bottom: 0;
+}
+
+.about-hero-copy .lead,
+.about-hero-copy p {
+  margin: 0;
+}
+
+.about-hero-note {
+  align-self: start;
+}
+
+@media (min-width: 900px) {
+  .about-hero-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(190px, 15rem);
+    gap: var(--sp-8);
+    align-items: start;
+  }
+
+  .about-hero-note {
+    margin-top: var(--sp-7);
+  }
+}
+
+/* =========================================================
+   THE DREX STORY  (01)
+========================================================= */
+.about-story-layout {
+  display: grid;
+  gap: var(--sp-6);
+}
+
+.about-story-copy {
+  display: grid;
+  gap: var(--sp-4);
+  align-content: start;
+}
+
+.about-story-copy .lead,
+.about-story-copy p {
+  margin: 0;
+}
+
+.about-story-aside {
+  align-self: start;
+  max-width: 22rem;
+}
+
+@media (min-width: 900px) {
+  .about-story-layout {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: var(--sp-8);
+    align-items: start;
+  }
+
+  .about-story-aside {
+    margin-top: var(--sp-6);
+    transform: rotate(-1.5deg);
+  }
+}
+
+/* =========================================================
+   WORKING PHILOSOPHY  (02)
+========================================================= */
+.philosophy-list {
+  list-style: none;
+  margin: var(--sp-6) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--sp-6);
+}
+
+.philosophy-entry {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--sp-2) var(--sp-4);
+  align-items: start;
+  margin: 0;
+  padding-left: var(--sp-4);
+  border-left: 2px solid var(--accent-tint);
+}
+
+.philosophy-index {
+  font-family: var(--font-type);
+  font-size: var(--fs-h3);
+  line-height: 1;
+  color: var(--ink-faint);
+  padding-top: 0.15em;
+}
+
+.philosophy-body h3 {
+  margin: 0 0 var(--sp-2);
+}
+
+.philosophy-body p {
+  margin: 0;
+  max-width: 58ch;
+}
+
+.philosophy-annotation {
+  margin-top: var(--sp-7);
+}
+
+/* 769+ so it clears responsive.css's <=768px single-column rule */
+@media (min-width: 769px) {
+  .philosophy-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-7) var(--sp-6);
+  }
+}
+
+/* =========================================================
+   VALUES  (03)
+========================================================= */
+.about-values-layout {
+  display: grid;
+  gap: var(--sp-6);
+}
+
+.about-values-copy {
+  align-content: start;
+}
+
+.about-values-copy .section-heading {
+  margin-bottom: var(--sp-5);
+}
+
+.value-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--sp-4);
+}
+
+.value-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--sp-3);
+  align-items: baseline;
+  margin: 0;
+}
+
+.value-check {
+  margin: 0;
+  font-size: 1.4em;
+}
+
+.value-text {
+  color: var(--ink-soft);
+  max-width: 54ch;
+}
+
+.about-values-note {
+  align-self: start;
+  justify-self: start;
+}
+
+@media (min-width: 860px) {
+  .about-values-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 15rem);
+    gap: var(--sp-8);
+    align-items: start;
+  }
+
+  .about-values-note {
+    margin-top: var(--sp-7);
+  }
+}
+
+@media (min-width: 1100px) {
+  .value-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-4) var(--sp-6);
+  }
+}
+
+/* =========================================================
+   CALL TO ACTION  (04)
+========================================================= */
+.about-cta-page {
+  text-align: center;
+  padding-block: var(--sp-8) var(--sp-9);
+}
+
+.about-cta-content {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-4);
+  max-width: 44ch;
+  margin-inline: auto;
+}
+
+.about-cta-content .handwritten-note {
+  margin: 0;
+}
+
+.about-cta-content h2 {
+  margin: 0;
+}
+
+.about-cta-content p {
+  margin: 0;
+  max-width: none;
+}
+
+.about-cta-content .button {
+  margin-top: var(--sp-3);
+}
